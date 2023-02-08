@@ -31,7 +31,6 @@ namespace PlanovacVyroby
             PridejZakazkuForm pridejZakazkuForm = new PridejZakazkuForm(evidence);
             pridejZakazkuForm.ShowDialog();
         }
-
         private void odeberZakazkuButton_Click(object sender, EventArgs e)
         {
             if(zakazkyAktualniDataGrid.SelectedRows.Count > 0)
@@ -46,7 +45,6 @@ namespace PlanovacVyroby
                     MessageBox.Show("Zakázka je rozdělaná", "Chyba", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
         private void pridejZamestnanceButton_Click(object sender, EventArgs e)
         {
             PridejZamestnanceForm pridejZamestnanceForm = new PridejZamestnanceForm(evidence);

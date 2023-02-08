@@ -80,7 +80,7 @@ namespace PlanovacVyroby
         {
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
-            using (XmlWriter writer = XmlWriter.Create(@"C:\\Programy\\trenink\\PlanovacVyroby\\PlanovacVyroby\\zakazky.xml",settings))
+            using (XmlWriter writer = XmlWriter.Create(@"zakazky.xml",settings))
             {
                 writer.WriteStartDocument();
                 writer.WriteStartElement("zakazky");
@@ -97,6 +97,18 @@ namespace PlanovacVyroby
                     writer.WriteElementString("nakladyNaVyrobu", zakazka.NakladyNaVyrobu.ToString());
                     writer.WriteEndElement();
                 }
+                foreach (var zakazka in EvidenceHotovychZakazek)
+                {
+                    writer.WriteStartElement("zakazkaHotova");
+                    writer.WriteElementString("nazevVykresu", zakazka.NazevVykresu);
+                    writer.WriteElementString("nazevZakazky", zakazka.NazevZakazky);
+                    writer.WriteElementString("cenaZaKus", zakazka.CenaZaKus.ToString());
+                    writer.WriteElementString("pocetKusu", zakazka.PocetKusu.ToString());
+                    writer.WriteElementString("terminDodani", zakazka.TerminDodani.ToShortDateString());
+                    writer.WriteElementString("nakladyNaMaterial", zakazka.NakladyMaterial.ToString());
+                    writer.WriteElementString("nakladyNaVyrobu", zakazka.NakladyNaVyrobu.ToString());
+                    writer.WriteEndElement();
+                }
 
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
@@ -105,7 +117,7 @@ namespace PlanovacVyroby
         }
         public void NactiDataZakazek()
         {
-            using (XmlReader reader = XmlReader.Create("C:\\Programy\\trenink\\PlanovacVyroby\\PlanovacVyroby\\zakazky.xml"))
+            using (XmlReader reader = XmlReader.Create("zakazky.xml"))
             {
                 string nazevVykresu = "";
                 string nazevZakazky = "";
@@ -155,6 +167,12 @@ namespace PlanovacVyroby
                         Zakazka nactenaZakazka = new Zakazka(nazevVykresu, nazevZakazky, cenaZaKus, pocetKusu, terminDodani, nakladyNaMaterial);
                         nactenaZakazka.NakladyNaVyrobu = nakladyNaVyrobu;
                         PridejZakazku(nactenaZakazka);
+                    }
+                    else if ((reader.NodeType == XmlNodeType.EndElement) && (reader.Name == "zakazkaHotova"))
+                    {
+                        Zakazka nactenaZakazka = new Zakazka(nazevVykresu, nazevZakazky, cenaZaKus, pocetKusu, terminDodani, nakladyNaMaterial);
+                        nactenaZakazka.NakladyNaVyrobu = nakladyNaVyrobu;
+                        EvidenceHotovychZakazek.Add(nactenaZakazka);
                     }
                 }
             }
