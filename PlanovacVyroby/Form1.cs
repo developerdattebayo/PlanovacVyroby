@@ -13,17 +13,18 @@ namespace PlanovacVyroby
     public partial class MainForm : Form
     {
         public Evidence evidence;
-        public BindingList<Zakazka> intervaloveZakazky; // zobrazí se při fitrování v hotových zakázkách
         public MainForm()
         {
             InitializeComponent();
             evidence = new Evidence();
             evidence.NactiDataZakazek();
-            intervaloveZakazky= new BindingList<Zakazka>();          
             //zakazkyAktualniDataGrid.AutoGenerateColumns = false;
             zakazkyAktualniDataGrid.DataSource = evidence.EvidenceZakazek;
             zamestnanciDataGrid.DataSource = evidence.EvidenceZamestnancu;
             hotoveZakazkyDataGridView.DataSource = evidence.EvidenceHotovychZakazek;
+            zakazkyAktualniDataGrid.Columns["DatumDokonceni"].Visible = false;
+            hotoveZakazkyDataGridView.Columns["TerminDodani"].Visible= false;
+            hotoveZakazkyDataGridView.Columns["ZbyvaDni"].Visible = false;
         }
 
         private void pridejZakazkuButton_Click(object sender, EventArgs e)
@@ -83,16 +84,31 @@ namespace PlanovacVyroby
                 }
             
         }
-
+        private void hledejZakazkuButton_Click(object sender, EventArgs e)
+        {
+            ZaznamVyber zaznamVyberForm = new ZaznamVyber(evidence,"zakazka");
+            zaznamVyberForm.ShowDialog();
+            hotoveZakazkyDataGridView.DataSource = evidence.FiltrovaneZakazky;
+            celkemZakazekLabel.Text = evidence.FiltrovaneZakazky.Count.ToString();
+            celkemZiskLabel.Text = ((float)evidence.CelkemZisk(evidence.FiltrovaneZakazky)).ToString();
+        }
+        private void hledejVykresButton_Click(object sender, EventArgs e)
+        {
+            ZaznamVyber zaznamVyberForm = new ZaznamVyber(evidence,"vykres");
+            zaznamVyberForm.ShowDialog();
+            hotoveZakazkyDataGridView.DataSource = evidence.FiltrovaneZakazky;
+            celkemZakazekLabel.Text = evidence.FiltrovaneZakazky.Count.ToString();
+            celkemZiskLabel.Text = ((float)evidence.CelkemZisk(evidence.FiltrovaneZakazky)).ToString();
+        }
         private void zobrazIntervaOdDoButton_Click(object sender, EventArgs e)
         {
-            intervaloveZakazky = null;
+                evidence.FiltrovaneZakazky = null;
                 try
                 {
-                    intervaloveZakazky = evidence.ZobrazIntervalZakazek(intervalOdDateTimePicker.Value, intervalDoDateTimePicker.Value);
-                    hotoveZakazkyDataGridView.DataSource = intervaloveZakazky;
-                    celkemZakazekLabel.Text = intervaloveZakazky.Count.ToString();
-                    celkemZiskLabel.Text = evidence.CelkemZisk(intervaloveZakazky).ToString();
+                    evidence.FiltrovaneZakazky = evidence.ZobrazIntervalZakazek(intervalOdDateTimePicker.Value, intervalDoDateTimePicker.Value);
+                    hotoveZakazkyDataGridView.DataSource = evidence.FiltrovaneZakazky;
+                    celkemZakazekLabel.Text = evidence.FiltrovaneZakazky.Count.ToString();
+                    celkemZiskLabel.Text = ((float)evidence.CelkemZisk(evidence.FiltrovaneZakazky)).ToString();
                 }
                 catch (Exception ex)
                 {
@@ -103,7 +119,7 @@ namespace PlanovacVyroby
         private void zrusitIntervalFiltrButton_Click(object sender, EventArgs e)
         {
             hotoveZakazkyDataGridView.DataSource = evidence.EvidenceHotovychZakazek;
-            intervaloveZakazky = null;
+            evidence.FiltrovaneZakazky = null;
             celkemZakazekLabel.Text = "0";
             celkemZiskLabel.Text = "0";
         }

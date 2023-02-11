@@ -53,6 +53,8 @@
             this.intervalDoDateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.hledejVykresButton = new System.Windows.Forms.Button();
+            this.hledejZakazkuButton = new System.Windows.Forms.Button();
             this.zrusitIntervalFiltrButton = new System.Windows.Forms.Button();
             this.celkemZiskLabel = new System.Windows.Forms.Label();
             this.ziskLabel2 = new System.Windows.Forms.Label();
@@ -76,11 +78,11 @@
             this.NazevVykresuCollum,
             this.ZbyvaDniCollum,
             this.PocetKusuCollum});
-            this.zakazkyAktualniDataGrid.Location = new System.Drawing.Point(710, 31);
+            this.zakazkyAktualniDataGrid.Location = new System.Drawing.Point(962, 35);
             this.zakazkyAktualniDataGrid.MultiSelect = false;
             this.zakazkyAktualniDataGrid.Name = "zakazkyAktualniDataGrid";
             this.zakazkyAktualniDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.zakazkyAktualniDataGrid.Size = new System.Drawing.Size(969, 666);
+            this.zakazkyAktualniDataGrid.Size = new System.Drawing.Size(913, 851);
             this.zakazkyAktualniDataGrid.TabIndex = 0;
             // 
             // NazevZakazkyColum
@@ -111,10 +113,10 @@
             // 
             this.zamestnanciDataGrid.BackgroundColor = System.Drawing.SystemColors.ControlLight;
             this.zamestnanciDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.zamestnanciDataGrid.Location = new System.Drawing.Point(12, 31);
+            this.zamestnanciDataGrid.Location = new System.Drawing.Point(12, 35);
             this.zamestnanciDataGrid.Name = "zamestnanciDataGrid";
             this.zamestnanciDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.zamestnanciDataGrid.Size = new System.Drawing.Size(401, 321);
+            this.zamestnanciDataGrid.Size = new System.Drawing.Size(326, 321);
             this.zamestnanciDataGrid.TabIndex = 1;
             // 
             // pridejZamestnanceButton
@@ -143,7 +145,7 @@
             this.zamestnanciGroupBox.Controls.Add(this.prihlasitNaZakazkuButton);
             this.zamestnanciGroupBox.Controls.Add(this.pridejZamestnanceButton);
             this.zamestnanciGroupBox.Controls.Add(this.odeberZamestnanceButton);
-            this.zamestnanciGroupBox.Location = new System.Drawing.Point(419, 31);
+            this.zamestnanciGroupBox.Location = new System.Drawing.Point(344, 36);
             this.zamestnanciGroupBox.Name = "zamestnanciGroupBox";
             this.zamestnanciGroupBox.Size = new System.Drawing.Size(139, 321);
             this.zamestnanciGroupBox.TabIndex = 4;
@@ -174,7 +176,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label1.Location = new System.Drawing.Point(707, 12);
+            this.label1.Location = new System.Drawing.Point(959, 19);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(107, 13);
             this.label1.TabIndex = 5;
@@ -184,7 +186,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label2.Location = new System.Drawing.Point(13, 12);
+            this.label2.Location = new System.Drawing.Point(12, 19);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(79, 13);
             this.label2.TabIndex = 6;
@@ -195,7 +197,7 @@
             this.zakazkyGroupBox.Controls.Add(this.zakazkaHotovaButton);
             this.zakazkyGroupBox.Controls.Add(this.odeberZakazkuButton);
             this.zakazkyGroupBox.Controls.Add(this.pridejZakazkuButton);
-            this.zakazkyGroupBox.Location = new System.Drawing.Point(564, 31);
+            this.zakazkyGroupBox.Location = new System.Drawing.Point(816, 36);
             this.zakazkyGroupBox.Name = "zakazkyGroupBox";
             this.zakazkyGroupBox.Size = new System.Drawing.Size(140, 321);
             this.zakazkyGroupBox.TabIndex = 7;
@@ -240,12 +242,12 @@
             this.hotoveZakazkyDataGridView.Location = new System.Drawing.Point(9, 85);
             this.hotoveZakazkyDataGridView.Name = "hotoveZakazkyDataGridView";
             this.hotoveZakazkyDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.hotoveZakazkyDataGridView.Size = new System.Drawing.Size(676, 432);
+            this.hotoveZakazkyDataGridView.Size = new System.Drawing.Size(928, 432);
             this.hotoveZakazkyDataGridView.TabIndex = 8;
             // 
             // zobrazIntervaOdDoButton
             // 
-            this.zobrazIntervaOdDoButton.Location = new System.Drawing.Point(497, 27);
+            this.zobrazIntervaOdDoButton.Location = new System.Drawing.Point(472, 28);
             this.zobrazIntervaOdDoButton.Name = "zobrazIntervaOdDoButton";
             this.zobrazIntervaOdDoButton.Size = new System.Drawing.Size(122, 23);
             this.zobrazIntervaOdDoButton.TabIndex = 9;
@@ -297,6 +299,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.hledejVykresButton);
+            this.groupBox1.Controls.Add(this.hledejZakazkuButton);
             this.groupBox1.Controls.Add(this.zrusitIntervalFiltrButton);
             this.groupBox1.Controls.Add(this.celkemZiskLabel);
             this.groupBox1.Controls.Add(this.ziskLabel2);
@@ -311,14 +315,34 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Location = new System.Drawing.Point(12, 361);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(692, 525);
+            this.groupBox1.Size = new System.Drawing.Size(944, 525);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Obsluha Dokončených Zakázek";
             // 
+            // hledejVykresButton
+            // 
+            this.hledejVykresButton.Location = new System.Drawing.Point(728, 26);
+            this.hledejVykresButton.Name = "hledejVykresButton";
+            this.hledejVykresButton.Size = new System.Drawing.Size(122, 23);
+            this.hledejVykresButton.TabIndex = 21;
+            this.hledejVykresButton.Text = "Hledej výkres";
+            this.hledejVykresButton.UseVisualStyleBackColor = true;
+            this.hledejVykresButton.Click += new System.EventHandler(this.hledejVykresButton_Click);
+            // 
+            // hledejZakazkuButton
+            // 
+            this.hledejZakazkuButton.Location = new System.Drawing.Point(728, 53);
+            this.hledejZakazkuButton.Name = "hledejZakazkuButton";
+            this.hledejZakazkuButton.Size = new System.Drawing.Size(122, 23);
+            this.hledejZakazkuButton.TabIndex = 20;
+            this.hledejZakazkuButton.Text = "Hledej zakázku";
+            this.hledejZakazkuButton.UseVisualStyleBackColor = true;
+            this.hledejZakazkuButton.Click += new System.EventHandler(this.hledejZakazkuButton_Click);
+            // 
             // zrusitIntervalFiltrButton
             // 
-            this.zrusitIntervalFiltrButton.Location = new System.Drawing.Point(497, 58);
+            this.zrusitIntervalFiltrButton.Location = new System.Drawing.Point(600, 27);
             this.zrusitIntervalFiltrButton.Name = "zrusitIntervalFiltrButton";
             this.zrusitIntervalFiltrButton.Size = new System.Drawing.Size(122, 23);
             this.zrusitIntervalFiltrButton.TabIndex = 19;
@@ -369,7 +393,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label7.Location = new System.Drawing.Point(711, 704);
+            this.label7.Location = new System.Drawing.Point(486, 19);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(86, 13);
             this.label7.TabIndex = 16;
@@ -378,16 +402,17 @@
             // pravePracujeListBox
             // 
             this.pravePracujeListBox.FormattingEnabled = true;
-            this.pravePracujeListBox.Location = new System.Drawing.Point(710, 718);
+            this.pravePracujeListBox.HorizontalScrollbar = true;
+            this.pravePracujeListBox.Location = new System.Drawing.Point(489, 41);
             this.pravePracujeListBox.Name = "pravePracujeListBox";
-            this.pravePracujeListBox.Size = new System.Drawing.Size(445, 160);
+            this.pravePracujeListBox.Size = new System.Drawing.Size(321, 316);
             this.pravePracujeListBox.TabIndex = 17;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1691, 898);
+            this.ClientSize = new System.Drawing.Size(1882, 898);
             this.Controls.Add(this.pravePracujeListBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.groupBox1);
@@ -447,6 +472,8 @@
         private System.Windows.Forms.Button zrusitIntervalFiltrButton;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ListBox pravePracujeListBox;
+        private System.Windows.Forms.Button hledejVykresButton;
+        private System.Windows.Forms.Button hledejZakazkuButton;
     }
 }
 

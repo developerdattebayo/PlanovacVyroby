@@ -16,6 +16,7 @@ namespace PlanovacVyroby
         public BindingList<Zamestnanec> EvidenceZamestnancu;
         public BindingList<Zakazka> EvidenceZakazek;
         public BindingList<Zakazka> EvidenceHotovychZakazek;
+        public BindingList<Zakazka> FiltrovaneZakazky;
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
@@ -28,6 +29,7 @@ namespace PlanovacVyroby
             EvidenceZamestnancu = new BindingList<Zamestnanec>();
             EvidenceZakazek = new BindingList<Zakazka>();
             EvidenceHotovychZakazek = new BindingList<Zakazka>();
+            FiltrovaneZakazky = new BindingList<Zakazka>();
 
             EvidenceZamestnancu.Add(new Zamestnanec("Jarda","Blažek",new DateTime(2000,2,1),140));
             EvidenceZamestnancu.Add(new Zamestnanec("Milan", "Plachý", new DateTime(1986, 3, 2), 160));
@@ -107,6 +109,7 @@ namespace PlanovacVyroby
                     writer.WriteElementString("terminDodani", zakazka.TerminDodani.ToShortDateString());
                     writer.WriteElementString("nakladyNaMaterial", zakazka.NakladyMaterial.ToString());
                     writer.WriteElementString("nakladyNaVyrobu", zakazka.NakladyNaVyrobu.ToString());
+                    writer.WriteElementString("datumDokonceni", zakazka.DatumDokonceni.ToShortDateString());
                     writer.WriteEndElement();
                 }
 
@@ -127,6 +130,7 @@ namespace PlanovacVyroby
                 decimal nakladyNaMaterial = 0;
                 decimal nakladyNaVyrobu = 0;
                 string element = "";
+                DateTime datumDokonceni = DateTime.Now;
 
                 while (reader.Read())
                 {
@@ -159,6 +163,9 @@ namespace PlanovacVyroby
                             case "nakladyNaVyrobu":
                                     nakladyNaVyrobu = decimal.Parse(reader.Value);
                                     break;
+                            case "datumDokonceni":
+                                    datumDokonceni = DateTime.Parse(reader.Value);
+                                    break;
                         }
                     }
 
@@ -172,6 +179,7 @@ namespace PlanovacVyroby
                     {
                         Zakazka nactenaZakazka = new Zakazka(nazevVykresu, nazevZakazky, cenaZaKus, pocetKusu, terminDodani, nakladyNaMaterial);
                         nactenaZakazka.NakladyNaVyrobu = nakladyNaVyrobu;
+                        nactenaZakazka.DatumDokonceni = datumDokonceni;
                         EvidenceHotovychZakazek.Add(nactenaZakazka);
                     }
                 }
@@ -203,6 +211,26 @@ namespace PlanovacVyroby
             var serazenyInterval = zakazkyIntevalu.OrderBy(a => a.TerminDodani).ToList();
             var list = new BindingList<Zakazka>(serazenyInterval);
             return list;
+        }
+        public BindingList<Zakazka> ZobrazCisloZakazky(string zakazka)
+        {
+            if (string.IsNullOrWhiteSpace(zakazka))
+                throw new ArgumentException("Zadejte zakázku");
+            else
+            {
+                var vykresy = EvidenceHotovychZakazek.Where(v => v.NazevZakazky == zakazka).Select(v => v).ToList();
+                return new BindingList<Zakazka>(vykresy);
+            }
+        }
+        public BindingList<Zakazka> ZobrazCisloVykresu(string vykres)
+        {
+            if (string.IsNullOrWhiteSpace(vykres))
+                throw new ArgumentException("Zadejte výkres");
+            else
+            { 
+               var vykresy = EvidenceHotovychZakazek.Where(v => v.NazevVykresu == vykres).Select(v => v).ToList();
+                return new BindingList<Zakazka>(vykresy);
+            }
         }
 
         public decimal CelkemZisk(BindingList<Zakazka> list)
