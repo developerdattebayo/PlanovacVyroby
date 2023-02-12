@@ -37,6 +37,7 @@
             this.pridejZamestnanceButton = new System.Windows.Forms.Button();
             this.odeberZamestnanceButton = new System.Windows.Forms.Button();
             this.zamestnanciGroupBox = new System.Windows.Forms.GroupBox();
+            this.upravMzduButton = new System.Windows.Forms.Button();
             this.odhlasitZeZakazkyButton = new System.Windows.Forms.Button();
             this.prihlasitNaZakazkuButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -141,6 +142,7 @@
             // 
             // zamestnanciGroupBox
             // 
+            this.zamestnanciGroupBox.Controls.Add(this.upravMzduButton);
             this.zamestnanciGroupBox.Controls.Add(this.odhlasitZeZakazkyButton);
             this.zamestnanciGroupBox.Controls.Add(this.prihlasitNaZakazkuButton);
             this.zamestnanciGroupBox.Controls.Add(this.pridejZamestnanceButton);
@@ -151,6 +153,16 @@
             this.zamestnanciGroupBox.TabIndex = 4;
             this.zamestnanciGroupBox.TabStop = false;
             this.zamestnanciGroupBox.Text = "Obsluha Zaměstnanců";
+            // 
+            // upravMzduButton
+            // 
+            this.upravMzduButton.Location = new System.Drawing.Point(6, 137);
+            this.upravMzduButton.Name = "upravMzduButton";
+            this.upravMzduButton.Size = new System.Drawing.Size(126, 23);
+            this.upravMzduButton.TabIndex = 6;
+            this.upravMzduButton.Text = "Upravit Mzdu";
+            this.upravMzduButton.UseVisualStyleBackColor = true;
+            this.upravMzduButton.Click += new System.EventHandler(this.upravMzduButton_Click);
             // 
             // odhlasitZeZakazkyButton
             // 
@@ -474,6 +486,7 @@
         private System.Windows.Forms.ListBox pravePracujeListBox;
         private System.Windows.Forms.Button hledejVykresButton;
         private System.Windows.Forms.Button hledejZakazkuButton;
+        private System.Windows.Forms.Button upravMzduButton;
     }
 }
 

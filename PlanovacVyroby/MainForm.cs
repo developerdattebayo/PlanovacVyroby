@@ -115,7 +115,6 @@ namespace PlanovacVyroby
                     MessageBox.Show(ex.Message);
                 }
         }
-
         private void zrusitIntervalFiltrButton_Click(object sender, EventArgs e)
         {
             hotoveZakazkyDataGridView.DataSource = evidence.EvidenceHotovychZakazek;
@@ -123,7 +122,6 @@ namespace PlanovacVyroby
             celkemZakazekLabel.Text = "0";
             celkemZiskLabel.Text = "0";
         }
-
         private void prihlasitNaZakazkuButton_Click(object sender, EventArgs e)
         {
             if(zamestnanciDataGrid.Rows.Count > 0)
@@ -143,7 +141,6 @@ namespace PlanovacVyroby
             }
             
         }
-
         private void odhlasitZeZakazkyButton_Click(object sender, EventArgs e)
         {
             if(zamestnanciDataGrid.Rows.Count > 0)
@@ -151,22 +148,34 @@ namespace PlanovacVyroby
                 Zamestnanec zamestnanec = (Zamestnanec)zamestnanciDataGrid.SelectedRows[0].DataBoundItem;
                 if(zamestnanec.praceNaZakazce != null)
                 {
+                    pravePracujeListBox.Items.Remove(zamestnanec);
                     zamestnanec.KonecPraceNaPolozce(); // přičtění náladů do zakázky
                     MessageBox.Show("Zaměstnanec byl odhlášen ze zakázky", "Odhlášení", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    pravePracujeListBox.Items.Remove(zamestnanec);
                 }
             }
         }
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            evidence.OdhlasVsechnyZamestnance();
             evidence.UlozDataZakazek();
         }
-
         private void MainForm_Load(object sender, EventArgs e)
         {
         }
-
-        
+        private void upravMzduButton_Click(object sender, EventArgs e)
+        {
+            if (zamestnanciDataGrid.SelectedRows.Count > 0)
+            {
+                Zamestnanec zamestnanec = (Zamestnanec)zamestnanciDataGrid.SelectedRows[0].DataBoundItem;
+                if (!evidence.JeZamestnanecPrihlaseniNaPolozce(zamestnanec))
+                {
+                    UpravMzduForm upravMzduForm = new UpravMzduForm(evidence, zamestnanec);
+                    upravMzduForm.ShowDialog();
+                }
+                else
+                    MessageBox.Show("Zaměstnanec pracuje. \nOdhlašte zaměstnance","Nelatná operace",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+            }
+            
+        }
     }
 }

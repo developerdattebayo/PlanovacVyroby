@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace PlanovacVyroby
 {
@@ -30,11 +33,6 @@ namespace PlanovacVyroby
             EvidenceZakazek = new BindingList<Zakazka>();
             EvidenceHotovychZakazek = new BindingList<Zakazka>();
             FiltrovaneZakazky = new BindingList<Zakazka>();
-
-            EvidenceZamestnancu.Add(new Zamestnanec("Jarda","Blažek",new DateTime(2000,2,1),140));
-            EvidenceZamestnancu.Add(new Zamestnanec("Milan", "Plachý", new DateTime(1986, 3, 2), 160));
-            EvidenceZamestnancu.Add(new Zamestnanec("Jíří", "Nový", new DateTime(1996, 2, 11), 180));
-            EvidenceZamestnancu.Add(new Zamestnanec("Václav", "Starý", new DateTime(2001, 6, 16), 190));
 
         }
         public void PridejZamestnance(string jmeno, string prijmeni, DateTime datumNarozeni, decimal mzdaNaHodinu)
@@ -74,9 +72,18 @@ namespace PlanovacVyroby
         {
             EvidenceZakazek.Remove(zakazka);
         }
-        public void UpravMzduNaHodinu(Zamestnanec zamestnanec,int novaMzda)
+        public void UpravMzduNaHodinu(Zamestnanec zamestnanec,decimal novaMzda)
         {
+            if (novaMzda <= 0)
+                throw new ArgumentException("Nová mzda musí být víc než 0");
             zamestnanec.UpravitMzduNaHodinu(novaMzda);
+        }
+        public bool JeZamestnanecPrihlaseniNaPolozce(Zamestnanec zamestnanec)
+        {
+            if (zamestnanec.praceNaZakazce != null)
+                return true;
+            return false;
+            
         }
         public void UlozDataZakazek()
         {
@@ -112,6 +119,16 @@ namespace PlanovacVyroby
                     writer.WriteElementString("datumDokonceni", zakazka.DatumDokonceni.ToShortDateString());
                     writer.WriteEndElement();
                 }
+                foreach (var zamestnanec in EvidenceZamestnancu)
+                {
+                    writer.WriteStartElement("zamestnanec");
+                    writer.WriteElementString("jmeno", zamestnanec.Jmeno);
+                    writer.WriteElementString("prijmeni", zamestnanec.Prijmeni);
+                    writer.WriteElementString("datumNarozeni", zamestnanec.DatumNarozeni.ToShortDateString());
+                    writer.WriteElementString("mzdaNaHodinu", zamestnanec.MzdaNaHodinu.ToString());
+                    writer.WriteEndElement();
+                }
+
 
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
@@ -131,6 +148,11 @@ namespace PlanovacVyroby
                 decimal nakladyNaVyrobu = 0;
                 string element = "";
                 DateTime datumDokonceni = DateTime.Now;
+                //Zamestnanec
+                string jmeno = "";
+                string prijmeni = "";
+                DateTime datumNarozeni = DateTime.Today;
+                decimal mzdaNaHodinu = 0;
 
                 while (reader.Read())
                 {
@@ -138,34 +160,46 @@ namespace PlanovacVyroby
                     {
                         element = reader.Name;
                     }
-                    else if(reader.NodeType == XmlNodeType.Text)
-                    { 
+                    else if (reader.NodeType == XmlNodeType.Text)
+                    {
                         switch (element)
                         {
                             case "nazevVykresu":
-                                    nazevVykresu = reader.Value;
-                                    break;
+                                nazevVykresu = reader.Value;
+                                break;
                             case "nazevZakazky":
-                                    nazevZakazky = reader.Value;
-                                    break;
+                                nazevZakazky = reader.Value;
+                                break;
                             case "cenaZaKus":
-                                    cenaZaKus = decimal.Parse(reader.Value);
-                                    break;
+                                cenaZaKus = decimal.Parse(reader.Value);
+                                break;
                             case "pocetKusu":
-                                    pocetKusu = int.Parse(reader.Value);
-                                    break;
+                                pocetKusu = int.Parse(reader.Value);
+                                break;
                             case "terminDodani":
-                                    terminDodani = DateTime.Parse(reader.Value);
-                                    break;
+                                terminDodani = DateTime.Parse(reader.Value);
+                                break;
                             case "nakladyNaMaterial":
-                                    nakladyNaMaterial = decimal.Parse(reader.Value);
-                                    break;
+                                nakladyNaMaterial = decimal.Parse(reader.Value);
+                                break;
                             case "nakladyNaVyrobu":
-                                    nakladyNaVyrobu = decimal.Parse(reader.Value);
-                                    break;
+                                nakladyNaVyrobu = decimal.Parse(reader.Value);
+                                break;
                             case "datumDokonceni":
-                                    datumDokonceni = DateTime.Parse(reader.Value);
-                                    break;
+                                datumDokonceni = DateTime.Parse(reader.Value);
+                                break;
+                            case "jmeno":
+                                jmeno = reader.Value;
+                                break;
+                            case "prijmeni":
+                                prijmeni = reader.Value;
+                                break;
+                            case "datumNarozeni":
+                                datumNarozeni = DateTime.Parse(reader.Value);
+                                break;
+                            case "mzdaNaHodinu":
+                                mzdaNaHodinu = decimal.Parse(reader.Value);
+                                break;
                         }
                     }
 
@@ -182,6 +216,11 @@ namespace PlanovacVyroby
                         nactenaZakazka.DatumDokonceni = datumDokonceni;
                         EvidenceHotovychZakazek.Add(nactenaZakazka);
                     }
+                    else if ((reader.NodeType == XmlNodeType.EndElement) && (reader.Name == "zamestnanec"))
+                    {
+                        Zamestnanec zamestnanec = new Zamestnanec(jmeno, prijmeni, datumNarozeni, mzdaNaHodinu);
+                        EvidenceZamestnancu.Add(zamestnanec);
+                    }
                 }
             }
         }
@@ -196,7 +235,14 @@ namespace PlanovacVyroby
             }
             return false;
         }
-
+        public void OdhlasVsechnyZamestnance()
+        {
+            foreach (var zamestnanec in EvidenceZamestnancu)
+            {
+                if(zamestnanec.praceNaZakazce != null)
+                zamestnanec.KonecPraceNaPolozce();
+            }
+        }
         public BindingList<Zakazka> ZobrazIntervalZakazek(DateTime odkdy,DateTime dokdy)
         {
             if (odkdy == null) throw new ArgumentNullException("Zadejte interval odkdy");
@@ -232,7 +278,43 @@ namespace PlanovacVyroby
                 return new BindingList<Zakazka>(vykresy);
             }
         }
+        //public void SerializujZamestnance()
+        //{
+        //    try
+        //    {
+        //        XmlSerializer serializer = new XmlSerializer(EvidenceZamestnancu.GetType());
+        //        using (StreamWriter writer = new StreamWriter("zamestnanci.xml"))
+        //        {
+        //            serializer.Serialize(writer,EvidenceZamestnancu);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message,"Chyba",MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
+        //public void DeserializujZamestnance()
+        //{
+        //    try
+        //    {
+        //        if (File.Exists("zamestnanci.xml"))
+        //        {
+        //            XmlSerializer serializer = new XmlSerializer(EvidenceZamestnancu.GetType());
+        //            using (StreamReader reader = new StreamReader("zamestnanci.xml"))
+        //            {
+        //                EvidenceZamestnancu = (BindingList<Zamestnanec>)serializer.Deserialize(reader);
 
+        //            }
+        //        }
+
+        //        else 
+        //        throw new FileNotFoundException("Soubor nebyl nalezen");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message, "Chyba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
         public decimal CelkemZisk(BindingList<Zakazka> list)
         {
             decimal vysledek = 0;

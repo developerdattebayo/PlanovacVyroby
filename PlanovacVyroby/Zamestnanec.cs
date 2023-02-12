@@ -23,7 +23,6 @@ namespace PlanovacVyroby
         public string Prijmeni { get;private set; }
         public DateTime DatumNarozeni { get; private set; }
         public int Vek { get; private set; }
-
         private decimal mzdaNaHodinu;
         public decimal MzdaNaHodinu 
         {
@@ -42,12 +41,10 @@ namespace PlanovacVyroby
         {
             MzdaNaHodinu = novaMzda;
         }
-
         public void ZacatekPraceNaPolozce()
         {
             ZacatekPrace= DateTime.Now;
         }
-
         public void KonecPraceNaPolozce()
         {
             TimeSpan odpracovaneHodiny = DateTime.Now - ZacatekPrace;
@@ -55,7 +52,6 @@ namespace PlanovacVyroby
             praceNaZakazce.NakladyNaVyrobu += nakladycelkem;
             praceNaZakazce = null;
         }
-
         public int SpoctiVek()
         {
             int vek = DateTime.Today.Year - DatumNarozeni.Year;
@@ -64,13 +60,11 @@ namespace PlanovacVyroby
             return vek;
      
         }
-
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-
         public override string ToString()
         {
             return string.Format("{0} {1} pracuje na zakázce: {2} položka: {3}",Jmeno,Prijmeni,praceNaZakazce.NazevZakazky,praceNaZakazce.NazevVykresu);
