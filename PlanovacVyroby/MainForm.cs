@@ -177,5 +177,17 @@ namespace PlanovacVyroby
             }
             
         }
+
+        private void zakazkyAktualniDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            foreach (DataGridViewRow row in zakazkyAktualniDataGrid.Rows)
+            {
+                double pocetDni = Convert.ToDouble(row.Cells[3].Value);
+                if (pocetDni < 10)
+                {
+                    row.DefaultCellStyle.ForeColor = Color.Red;
+                }
+            }
+        }
     }
 }

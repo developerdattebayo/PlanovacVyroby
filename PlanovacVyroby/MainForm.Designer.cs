@@ -85,6 +85,7 @@
             this.zakazkyAktualniDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.zakazkyAktualniDataGrid.Size = new System.Drawing.Size(913, 851);
             this.zakazkyAktualniDataGrid.TabIndex = 0;
+            this.zakazkyAktualniDataGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.zakazkyAktualniDataGrid_CellFormatting);
             // 
             // NazevZakazkyColum
             // 
@@ -115,6 +116,7 @@
             this.zamestnanciDataGrid.BackgroundColor = System.Drawing.SystemColors.ControlLight;
             this.zamestnanciDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.zamestnanciDataGrid.Location = new System.Drawing.Point(12, 35);
+            this.zamestnanciDataGrid.MultiSelect = false;
             this.zamestnanciDataGrid.Name = "zamestnanciDataGrid";
             this.zamestnanciDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.zamestnanciDataGrid.Size = new System.Drawing.Size(326, 321);
