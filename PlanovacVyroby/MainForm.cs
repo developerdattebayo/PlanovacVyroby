@@ -17,7 +17,7 @@ namespace PlanovacVyroby
         {
             InitializeComponent();
             evidence = new Evidence();
-            evidence.NactiDataZakazek();
+            evidence.NactiData();
             //zakazkyAktualniDataGrid.AutoGenerateColumns = false;
             zakazkyAktualniDataGrid.DataSource = evidence.EvidenceZakazek;
             zamestnanciDataGrid.DataSource = evidence.EvidenceZamestnancu;
@@ -76,6 +76,7 @@ namespace PlanovacVyroby
                     if(!evidence.JeZakazkaRozpracovana(vybranaZakazka)) //Evidence zkontroluje kolekci zamestnancu jestli nema nekdo referenci na zakazku
                     { 
                         vybranaZakazka.DatumDokonceni = DateTime.Today;
+                        evidence.UlozDoDBHotovouZakazku(vybranaZakazka.DatumDokonceni, vybranaZakazka);
                         evidence.EvidenceHotovychZakazek.Add(vybranaZakazka);
                         evidence.EvidenceZakazek.Remove(vybranaZakazka);
                     }
@@ -149,7 +150,9 @@ namespace PlanovacVyroby
                 if(zamestnanec.praceNaZakazce != null)
                 {
                     pravePracujeListBox.Items.Remove(zamestnanec);
+                    Zakazka rozpracovanaZakazka = zamestnanec.praceNaZakazce;
                     zamestnanec.KonecPraceNaPolozce(); // přičtění náladů do zakázky
+                    evidence.UlozDoDBNakladyNaVyrobu(rozpracovanaZakazka); // uložení nákladů do DB
                     MessageBox.Show("Zaměstnanec byl odhlášen ze zakázky", "Odhlášení", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -157,7 +160,6 @@ namespace PlanovacVyroby
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             evidence.OdhlasVsechnyZamestnance();
-            evidence.UlozDataZakazek();
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
